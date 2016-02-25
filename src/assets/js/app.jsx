@@ -17,7 +17,7 @@ var App   = React.createClass({
       <div className='row'>
         <div className='col-md-2'>
           <h4>Images</h4>
-          <ImagesComponent render="sidebar" source="https://api.github.com/search/repositories?q=user:azukiapp+fork:true+docker-+in:name" />
+          <ImagesComponent render="sidebar" />
         </div>
         <RouteHandler />
       </div>
@@ -31,6 +31,11 @@ var App   = React.createClass({
  */
 
 var ImagesComponent = React.createClass({
+  getDefaultProps: function() {
+    return {
+      source: "https://api.github.com/search/repositories?q=user:azukiapp+user:azuki-images+fork:true+docker-+in:name",
+    };
+  },
   getInitialState: function() {
     return {images: []};
   },
@@ -61,8 +66,9 @@ var ImagesComponent = React.createClass({
     });
     return _.map(filteredProjects, function(project){
       return {
-        id: project.name.replace(/docker-/, ''),
+        id: project.full_name.replace(/docker-/, ''),
         name: project.name.replace(/docker-/, '').replace(/-/, ' '),
+        full_name: project.full_name.replace(/docker-/, ''),
         description: project.description
       }
     });
@@ -105,7 +111,7 @@ var ImagesTable = React.createClass({
           {this.props.images.map(function(image){
             return (
               <tr key={image.id}>
-                <td><a href={'/#/' + image.id }>azukiapp/<strong>{ image.id }</strong></a></td>
+                <td><a href={'/#/' + image.id }><strong>{ image.full_name }</strong></a></td>
                 <td>{ image.description }</td>
               </tr>
             )

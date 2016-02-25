@@ -18,8 +18,8 @@ function push_analytics(label) {
 var routes = (
   <Route handler={App}>
     <Route path="/" handler={HomeTemplate} />
-    <Route path="/:name" handler={ProjectTemplate} />
-    <Route path="/:name/:version" handler={ProjectTemplate}  ignoreScrollBehavior />
+    <Route path="/:namespace/:name" handler={ProjectTemplate} />
+    <Route path="/:namespace/:name/:version" handler={ProjectTemplate}  ignoreScrollBehavior />
   </Route>
 );
 

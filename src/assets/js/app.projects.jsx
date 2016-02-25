@@ -47,7 +47,7 @@ var ProjectTemplate = React.createClass({
   },
 
   retrieveReadme: function() {
-     var urlReadme = 'https://api.github.com/repos/azukiapp/docker-' + this.getParams().name + '/readme';
+     var urlReadme = 'https://api.github.com/repos/' + this.getParams().namespace + '/docker-' + this.getParams().name + '/readme';
     $.ajax({
       url: urlReadme,
       cache: true,
@@ -71,7 +71,7 @@ var ProjectTemplate = React.createClass({
 
   retrieveDockerfile: function() {
 
-    var urlDockerfile = "https://api.github.com/repos/azukiapp/docker-" + this.getParams().name + "/contents/Dockerfile";
+    var urlDockerfile = "https://api.github.com/repos/" + this.getParams().namespace + "/docker-" + this.getParams().name + "/contents/Dockerfile";
 
     // here we check if /:version is available
     // and if it is, we will fetch a different Dockerfile
@@ -87,7 +87,7 @@ var ProjectTemplate = React.createClass({
       var ref = pathWithBranch.split("/")[0];
       var path = pathWithBranch.replace(ref, "");
 
-      urlDockerfile = ["https://api.github.com/repos/azukiapp/docker-", this.getParams().name, "/contents", path, '/?ref=', ref].join("");
+      urlDockerfile = ["https://api.github.com/repos/" + this.getParams().namespace + "/docker-", this.getParams().name, "/contents", path, '/?ref=', ref].join("");
 
     }
 
@@ -121,7 +121,7 @@ var ProjectTemplate = React.createClass({
       <div className='col-md-10'>
         <div className='col-md-9'>
           <h1>
-            <span className="text-danger">azukiapp/{params.name}</span>
+            <span className="text-danger">{params.namespace}/{params.name}</span>
           </h1>
           <READMEFileComponent key={'readme-' + params.name} projectName={params.name} readme={this.state.readme}/>
           <div id="docker-component">
@@ -129,7 +129,7 @@ var ProjectTemplate = React.createClass({
           </div>
         </div>
         <div className='col-md-3'>
-          <VersionsComponent key={'versions-' + params.name} projectName={params.name}  versions={parsedVersions} />
+          <VersionsComponent key={'versions-' + params.name} projectNamespace={params.namespace} projectName={params.name} versions={parsedVersions} />
         </div>
       </div>
     );
@@ -228,17 +228,18 @@ var VersionsComponent = React.createClass({
   render: function() {
     var parsedVersions = this.props.versions;
     var projectName = this.props.projectName;
+    var projectNamespace = this.props.projectNamespace;
     return (
       <div id="stickySidebar">
         <ul className="nav">
           <li>
-            <a href={'https://github.com/azukiapp/docker-' + projectName + '/'}>
+            <a href={'https://github.com/' + projectNamespace + '/docker-' + projectName + '/'}>
               <span className="glyphicon glyphicon-star small-glyphicon"></span> GitHub Repository
             </a>
           </li>
 
           <li>
-            <a href={'https://registry.hub.docker.com/u/azukiapp/' + projectName + '/'}>
+            <a href={'https://registry.hub.docker.com/u/' + projectNamespace + '/' + projectName + '/'}>
               <span className="glyphicon glyphicon-thumbs-up small-glyphicon"></span> Docker Hub Registry
             </a>
           </li>
@@ -248,7 +249,7 @@ var VersionsComponent = React.createClass({
               {_.map(parsedVersions, function(version){
                 return (
                   <li role="presentation">
-                    <a key={version.id} href={'/#/' + projectName + '/' + version.id }>{version.name}</a>
+                    <a key={version.id} href={'/#/' + projectNamespace + '/' + projectName + '/' + version.id }>{version.name}</a>
                   </li>
                 )
               })}

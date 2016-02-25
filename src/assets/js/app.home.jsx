@@ -25,7 +25,7 @@ var HomeTemplate = React.createClass({
           <span className="glyphicon glyphicon-thumbs-up big-thumbs-up"></span>
           Images
         </h4>
-        <ImagesComponent render="IndexItem" source="https://api.github.com/search/repositories?q=user:azukiapp+fork:true+docker-+in:name" />
+        <ImagesComponent render="IndexItem" />
       </div>
     );
   }
