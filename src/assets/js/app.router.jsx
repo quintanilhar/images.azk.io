@@ -18,6 +18,7 @@ function push_analytics(label) {
 var routes = (
   <Route handler={App}>
     <Route path="/" handler={HomeTemplate} />
+    <Redirect from="/:name" to="/azukiapp/:name" />
     <Route path="/:namespace/:name" handler={ProjectTemplate} />
     <Route path="/:namespace/:name/:version" handler={ProjectTemplate}  ignoreScrollBehavior />
   </Route>

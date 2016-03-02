@@ -24,7 +24,7 @@ var PrismlangRegEX = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
  */
 
 var ProjectTemplate = React.createClass({
-  mixins: [Router.State],
+  mixins: [Router.State, Router.Navigation],
 
   componentWillReceiveProps: function(nextProps) {
     // force ajax to fetch new repository
@@ -43,7 +43,17 @@ var ProjectTemplate = React.createClass({
   },
 
   componentDidMount: function() {
+    this.redirectIfOldLinkFormatDetected();
     this.retrieveReadme();
+  },
+
+  redirectIfOldLinkFormatDetected: function() {
+    var repoName = this.getParams().name;
+    var oldFormatChecker = new RegExp(/^([0-9]|latest)/g);
+
+    if (oldFormatChecker.test(repoName)) {
+      this.transitionTo('/azukiapp/' + this.getParams().namespace + '/' + this.getParams().name);
+    } 
   },
 
   retrieveReadme: function() {
